@@ -71,6 +71,7 @@
 
 - (void)dealloc
 {
+    self.scrollView.delegate = nil;
     [_navigationBar removeFromSuperview];
 }
 
