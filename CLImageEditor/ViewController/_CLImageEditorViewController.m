@@ -9,11 +9,25 @@
 
 #import "CLImageToolBase.h"
 
+@implementation UINavigationBar (CLInheritAppearance)
+
+-(void)cl_inheritAppearanceFromNavigationBar:(UINavigationBar *)navigationBar
+{
+   [self setBackgroundImage: [navigationBar backgroundImageForBarMetrics: UIBarMetricsDefault]
+              forBarMetrics: UIBarMetricsDefault];
+
+   self.shadowImage = navigationBar.shadowImage;
+   self.translucent = navigationBar.translucent;
+   self.barTintColor = navigationBar.barTintColor;
+   self.backgroundColor = navigationBar.backgroundColor;
+}
+
+@end
 
 #pragma mark- _CLImageEditorViewController
 
 @interface _CLImageEditorViewController()
-<CLImageToolProtocol>
+<CLImageToolProtocol, UINavigationBarDelegate>
 @property (nonatomic, strong) CLImageToolBase *currentTool;
 @property (nonatomic, strong, readwrite) CLImageToolInfo *toolInfo;
 @property (nonatomic, strong) UIImageView *targetImageView;
@@ -90,6 +104,7 @@
         CGFloat dy = ([UIDevice iosVersion]<7) ? 0 : MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
         
         UINavigationBar *navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, dy, self.view.width, 44)];
+        [navigationBar cl_inheritAppearanceFromNavigationBar: self.navigationController.navigationBar];
         [navigationBar pushNavigationItem:navigationItem animated:NO];
         navigationBar.delegate = self;
         
@@ -192,18 +207,6 @@
     if([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]){
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     }
-    
-    [self initNavigationBar];
-    [self initMenuScrollView];
-    [self initImageScrollView];
-    
-    [self setMenuView];
-    
-    if(_imageView==nil){
-        _imageView = [UIImageView new];
-        [_scrollView addSubview:_imageView];
-        [self refreshImageView];
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -214,6 +217,22 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+   [ super viewWillAppear: animated ];
+
+   if (!_navigationBar){
+      [self initNavigationBar];
+      [self initMenuScrollView];
+      [self initImageScrollView];
+      
+      [self setMenuView];
+      
+      if(_imageView==nil){
+         _imageView = [UIImageView new];
+         [_scrollView addSubview:_imageView];
+         [self refreshImageView];
+      }
+   }
+   
     if(self.targetImageView){
         [self expropriateImageView];
     }
