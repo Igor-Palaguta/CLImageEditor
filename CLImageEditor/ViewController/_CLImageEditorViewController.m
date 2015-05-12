@@ -682,4 +682,11 @@
     _imageView.frame = rct;
 }
 
+-(void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+
+    [self refreshImageView];
+}
+
 @end
