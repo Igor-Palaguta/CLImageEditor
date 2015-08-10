@@ -19,7 +19,7 @@
 
 + (NSString*)defaultTitle
 {
-    return NSLocalizedStringWithDefaultValue(@"CLPosterizeEffect_DefaultTitle", nil, [CLImageEditorTheme bundle], @"Posterize", @"");
+    return [CLImageEditorTheme localizedString:@"CLPosterizeEffect_DefaultTitle" withDefault:@"Posterize"];
 }
 
 + (BOOL)isAvailable
@@ -54,7 +54,7 @@
     [filter setDefaults];
     [filter setValue:[NSNumber numberWithFloat:-_levelSlider.value] forKey:@"inputLevels"];
     
-    CIContext *context = [CIContext contextWithOptions:nil];
+    CIContext *context = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer : @(NO)}];
     CIImage *outputImage = [filter outputImage];
     CGImageRef cgImage = [context createCGImage:outputImage fromRect:[outputImage extent]];
     

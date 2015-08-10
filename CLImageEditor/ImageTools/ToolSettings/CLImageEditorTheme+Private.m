@@ -7,13 +7,25 @@
 
 #import "CLImageEditorTheme+Private.h"
 
+#import "CLImageEditor.h"
+#import "UIImage+Utility.h"
+
 @implementation CLImageEditorTheme (Private)
 
 #pragma mark- instance methods
 
 - (NSBundle*)bundle
 {
-    return [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:self.bundleName ofType:@"bundle"]];
+    NSString *path = [[NSBundle mainBundle] pathForResource:self.bundleName ofType:@"bundle"];
+    if(path){
+        return [NSBundle bundleWithPath:path];
+    }
+    
+    path = [[NSBundle bundleForClass:self.class] pathForResource:self.bundleName ofType:@"bundle"];
+    if(path){
+        return [NSBundle bundleWithPath:path];
+    }
+    return nil;
 }
 
 #pragma mark- class methods
@@ -30,9 +42,17 @@
 
 + (UIImage*)imageNamed:(Class)path image:(NSString*)image
 {
-	CLImageEditorTheme *theme = [CLImageEditorTheme theme];
-	
-    return [UIImage imageNamed:[NSString stringWithFormat:@"%@.bundle/%@/%@/%@", self.bundleName, path, theme.toolIconColor, image]];
+    CLImageEditorTheme *theme = [CLImageEditorTheme theme];
+    NSString *imagePath = [self.bundle.bundlePath stringByAppendingString:[NSString stringWithFormat:@"/%@/%@/%@", path, theme.toolIconColor, image]];
+    
+    return [UIImage fastImageWithContentsOfFile:imagePath];
+}
+
++ (NSString*)localizedString:(NSString*)key withDefault:defaultValue
+{
+    NSString *str = NSLocalizedString(key, @"");
+    if(![str isEqualToString:key]){ return str; }
+    return NSLocalizedStringWithDefaultValue(key, nil, [CLImageEditorTheme bundle], defaultValue, @"");
 }
 
 #pragma mark color settings

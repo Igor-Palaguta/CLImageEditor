@@ -21,7 +21,7 @@
 
 + (NSString*)defaultTitle
 {
-    return NSLocalizedStringWithDefaultValue(@"CLGloomEffect_DefaultTitle", nil, [CLImageEditorTheme bundle], @"Gloom", @"");
+    return [CLImageEditorTheme localizedString:@"CLGloomEffect_DefaultTitle" withDefault:@"Gloom"];
 }
 
 + (BOOL)isAvailable
@@ -59,7 +59,7 @@
     [filter setValue:[NSNumber numberWithFloat:R] forKey:@"inputRadius"];
     [filter setValue:[NSNumber numberWithFloat:_intensitySlider.value] forKey:@"inputIntensity"];
     
-    CIContext *context = [CIContext contextWithOptions:nil];
+    CIContext *context = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer : @(NO)}];
     CIImage *outputImage = [filter outputImage];
     CGImageRef cgImage = [context createCGImage:outputImage fromRect:[outputImage extent]];
     
@@ -104,7 +104,7 @@
     _radiusSlider.superview.center = CGPointMake(_containerView.width/2, _containerView.height-30);
     
     _intensitySlider = [self sliderWithValue:1 minimumValue:0 maximumValue:1.0];
-    _intensitySlider.superview.center = CGPointMake(300, _radiusSlider.superview.top - 150);
+    _intensitySlider.superview.center = CGPointMake(_containerView.width-20, _radiusSlider.superview.top - 150);
     _intensitySlider.superview.transform = CGAffineTransformMakeRotation(-M_PI * 90 / 180.0f);
 }
 

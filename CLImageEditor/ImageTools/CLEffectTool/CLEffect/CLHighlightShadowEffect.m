@@ -22,7 +22,7 @@
 
 + (NSString*)defaultTitle
 {
-    return NSLocalizedStringWithDefaultValue(@"CLHighlightSadowEffect_DefaultTitle", nil, [CLImageEditorTheme bundle], @"Highlight", @"");
+    return [CLImageEditorTheme localizedString:@"CLHighlightSadowEffect_DefaultTitle" withDefault:@"Highlight"];
 }
 
 + (BOOL)isAvailable
@@ -60,7 +60,7 @@
     //CGFloat R = MAX(image.size.width, image.size.height) * 0.02 * _radiusSlider.value;
     //[filter setValue:[NSNumber numberWithFloat:R] forKey:@"inputRadius"];
     
-    CIContext *context = [CIContext contextWithOptions:nil];
+    CIContext *context = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer : @(NO)}];
     CIImage *outputImage = [filter outputImage];
     CGImageRef cgImage = [context createCGImage:outputImage fromRect:[outputImage extent]];
     

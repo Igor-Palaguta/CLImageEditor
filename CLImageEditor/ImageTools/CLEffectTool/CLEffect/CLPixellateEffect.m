@@ -20,7 +20,7 @@
 
 + (NSString*)defaultTitle
 {
-    return NSLocalizedStringWithDefaultValue(@"CLPixellateEffect_DefaultTitle", nil, [CLImageEditorTheme bundle], @"Pixelate", @"");
+    return [CLImageEditorTheme localizedString:@"CLPixellateEffect_DefaultTitle" withDefault:@"Pixelate"];
 }
 
 + (BOOL)isAvailable
@@ -59,7 +59,7 @@
     [filter setValue:vct forKey:@"inputCenter"];
     [filter setValue:[NSNumber numberWithFloat:R] forKey:@"inputScale"];
     
-    CIContext *context = [CIContext contextWithOptions:nil];
+    CIContext *context = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer : @(NO)}];
     CIImage *outputImage = [filter outputImage];
     CGImageRef cgImage = [context createCGImage:outputImage fromRect:[outputImage extent]];
     

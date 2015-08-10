@@ -19,7 +19,7 @@
 
 + (NSString*)defaultTitle
 {
-    return NSLocalizedStringWithDefaultValue(@"CLHueEffect_DefaultTitle", nil, [CLImageEditorTheme bundle], @"Hue", @"");
+    return [CLImageEditorTheme localizedString:@"CLHueEffect_DefaultTitle" withDefault:@"Hue"];
 }
 
 + (BOOL)isAvailable
@@ -55,7 +55,7 @@
     [filter setDefaults];
     [filter setValue:[NSNumber numberWithFloat:_hueSlider.value] forKey:@"inputAngle"];
     
-    CIContext *context = [CIContext contextWithOptions:nil];
+    CIContext *context = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer : @(NO)}];
     CIImage *outputImage = [filter outputImage];
     CGImageRef cgImage = [context createCGImage:outputImage fromRect:[outputImage extent]];
     

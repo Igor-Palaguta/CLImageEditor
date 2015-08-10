@@ -13,7 +13,7 @@
 
 + (NSString*)defaultIconImagePath
 {
-    return [NSString stringWithFormat:@"%@.bundle/CLEffectTool/%@.png", [CLImageEditorTheme bundleName], NSStringFromClass([self class])];
+    return [NSString stringWithFormat:@"%@/CLEffectTool/%@.png", CLImageEditorTheme.bundle.bundlePath, NSStringFromClass([self class])];
 }
 
 + (CGFloat)defaultDockedNumber
@@ -40,7 +40,7 @@
 
 + (NSString*)defaultTitle
 {
-    return NSLocalizedStringWithDefaultValue(@"CLEffectBase_DefaultTitle", nil, [CLImageEditorTheme bundle], @"None", @"");
+    return [CLImageEditorTheme localizedString:@"CLEffectBase_DefaultTitle" withDefault:@"None"];
 }
 
 + (BOOL)isAvailable
@@ -69,7 +69,7 @@
     
 }
 
-- (BOOL)needsThumnailPreview
+- (BOOL)needsThumbnailPreview
 {
     return YES;
 }

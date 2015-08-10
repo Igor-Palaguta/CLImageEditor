@@ -9,6 +9,9 @@
 
 #import "CLSplineInterpolator.h"
 
+static NSString* const kCLToneCurveToolArrowIconName = @"arrowIconAssetsName";
+static NSString* const kCLToneCurveToolResetIconName = @"resetIconAssetsName";
+
 
 @protocol CLToneCurveGridDelegate;
 
@@ -44,7 +47,7 @@
 @implementation CLToneCurveTool
 {
     UIImage *_originalImage;
-    UIImage *_thumnailImage;
+    UIImage *_thumbnailImage;
     
     UIView *_menuContainer;
     CLToneCurveView *_tonecurveView;
@@ -55,7 +58,7 @@
 
 + (NSString*)defaultTitle
 {
-    return NSLocalizedStringWithDefaultValue(@"CLToneCurveTool_DefaultTitle", nil, [CLImageEditorTheme bundle], @"ToneCurve", @"");
+    return [CLImageEditorTheme localizedString:@"CLToneCurveTool_DefaultTitle" withDefault:@"ToneCurve"];
 }
 
 + (BOOL)isAvailable
@@ -63,18 +66,30 @@
     return ([UIDevice iosVersion] >= 5.0);
 }
 
+#pragma mark- optional info
+
++ (NSDictionary*)optionalInfo
+{
+    return @{
+             kCLToneCurveToolArrowIconName : @"",
+             kCLToneCurveToolResetIconName : @"",
+             };
+}
+
+#pragma mark-
+
 - (void)setup
 {
     _originalImage = self.editor.imageView.image;
-    _thumnailImage = [_originalImage resize:self.editor.imageView.frame.size];
+    _thumbnailImage = [_originalImage resize:self.editor.imageView.frame.size];
     
-    self.editor.imageView.image = _thumnailImage;
+    self.editor.imageView.image = _thumbnailImage;
     
     _menuContainer = [[UIView alloc] initWithFrame:CGRectMake(0, self.editor.view.height-280, self.editor.view.width, 280)];
     _menuContainer.backgroundColor = [UIColor colorWithWhite:1 alpha:0.6];
     [self.editor.view addSubview:_menuContainer];
     
-    _tonecurveView = [[CLToneCurveView alloc] initWithSuperview:_menuContainer frame:CGRectMake(10, 20, 240, 240)];
+    _tonecurveView = [[CLToneCurveView alloc] initWithSuperview:_menuContainer frame:CGRectMake(10, 20, _menuContainer.width-80, 240)];
     _tonecurveView.delegate = self;
     _tonecurveView.backgroundColor = [UIColor clearColor];
     _tonecurveView.gridColor  = [UIColor colorWithWhite:0 alpha:0.2];
@@ -86,14 +101,14 @@
     btn.frame = CGRectMake(_tonecurveView.right + 20, 15, 30, 30);
     [btn addTarget:self action:@selector(pushedHideBtn:) forControlEvents:UIControlEventTouchUpInside];
 	
-    [btn setImage:[CLImageEditorTheme imageNamed:[self class] image:@"btn_arrow.png"] forState:UIControlStateNormal];
+    [btn setImage:[self imageForKey:kCLToneCurveToolArrowIconName defaultImageName:@"btn_arrow.png"] forState:UIControlStateNormal];
     [_menuContainer addSubview:btn];
     
     btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(_tonecurveView.right + 20, _tonecurveView.bottom - 30, 30, 30);
     [btn addTarget:self action:@selector(pushedResetBtn:) forControlEvents:UIControlEventTouchUpInside];
 	
-    [btn setImage:[CLImageEditorTheme imageNamed:[self class] image:@"btn_reset.png"] forState:UIControlStateNormal];
+    [btn setImage:[self imageForKey:kCLToneCurveToolResetIconName defaultImageName:@"btn_reset.png"] forState:UIControlStateNormal];
     [_menuContainer addSubview:btn];
     
     _menuContainer.transform = CGAffineTransformMakeTranslation(0, self.editor.view.height-_menuContainer.top);
@@ -144,7 +159,7 @@
     inProgress = YES;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        UIImage *image = [self filteredImage:_thumnailImage];
+        UIImage *image = [self filteredImage:_thumbnailImage];
         [self.editor.imageView performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:NO];
         inProgress = NO;
     });
@@ -164,7 +179,7 @@
     [filter setValue:_tonecurveView.point3 forKey:@"inputPoint3"];
     [filter setValue:_tonecurveView.point4 forKey:@"inputPoint4"];
     
-    CIContext *context = [CIContext contextWithOptions:nil];
+    CIContext *context = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer : @(NO)}];
     CIImage *outputImage = [filter outputImage];
     CGImageRef cgImage = [context createCGImage:outputImage fromRect:[outputImage extent]];
     
