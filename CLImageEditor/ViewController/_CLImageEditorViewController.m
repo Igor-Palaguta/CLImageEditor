@@ -8,6 +8,7 @@
 #import "_CLImageEditorViewController.h"
 
 #import "CLImageToolBase.h"
+#import "CLToolbarMenuItem.h"
 
 @implementation UINavigationBar (CLInheritAppearance)
 
@@ -590,16 +591,34 @@
 
 - (void)tappedMenuView:(UITapGestureRecognizer*)sender
 {
-    UIView *view = sender.view;
-    
-    view.alpha = 0.2;
+    [self selectMenuItemView: sender.view];
+}
+
+- (void)selectMenuItemView:(UIView*)itemView
+{
+    itemView.alpha = 0.2;
     [UIView animateWithDuration:kCLImageToolAnimationDuration
                      animations:^{
-                         view.alpha = 1;
+                         itemView.alpha = 1;
                      }
      ];
     
-    [self setupToolWithToolInfo:view.toolInfo];
+    [self setupToolWithToolInfo:itemView.toolInfo];
+}
+
+- (void)selectMenuItemWithToolName:(NSString*)toolName
+{
+    for (UIView* subview in self.menuView.subviews)
+    {
+        if (![subview isKindOfClass: [CLToolbarMenuItem class]])
+            continue;
+        
+        CLToolbarMenuItem* itemView = (CLToolbarMenuItem*)subview;
+        if ([itemView.toolInfo.toolName isEqualToString:toolName])
+        {
+            [self selectMenuItemView:itemView];
+        }
+    }
 }
 
 - (IBAction)pushedCancelBtn:(id)sender

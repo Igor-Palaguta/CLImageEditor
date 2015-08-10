@@ -27,6 +27,8 @@
 
 - (void)showInViewController:(UIViewController<CLImageEditorTransitionDelegate>*)controller withImageView:(UIImageView*)imageView;
 
+- (void)selectMenuItemWithToolName:(NSString*)toolName;
+
 @end
 
 

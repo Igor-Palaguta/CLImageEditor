@@ -27,4 +27,6 @@
 - (void)fixZoomScaleWithAnimated:(BOOL)animated;
 - (void)resetZoomScaleWithAnimated:(BOOL)animated;
 
+- (void)selectMenuItemWithToolName:(NSString*)toolName;
+
 @end

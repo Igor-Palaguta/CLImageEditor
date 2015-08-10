@@ -454,7 +454,9 @@
 				AD5C1E0218350DC400790989 /* Frameworks */,
 				AD5C1E0118350DC400790989 /* Products */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
 		};
 		AD5C1E0118350DC400790989 /* Products */ = {
 			isa = PBXGroup;

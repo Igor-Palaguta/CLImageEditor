@@ -41,6 +41,11 @@
     
 }
 
+- (void)selectMenuItemWithToolName:(NSString*)toolName
+{
+    
+}
+
 - (CLImageEditorTheme*)theme
 {
     return [CLImageEditorTheme theme];
