@@ -12,15 +12,20 @@
 
 @implementation UINavigationBar (CLInheritAppearance)
 
--(void)cl_inheritAppearanceFromNavigationBar:(UINavigationBar *)navigationBar
+-(void)cl_inheritAppearanceFromNavigationBar:(UINavigationBar*)navigationBar
 {
-   [self setBackgroundImage: [navigationBar backgroundImageForBarMetrics: UIBarMetricsDefault]
-              forBarMetrics: UIBarMetricsDefault];
-
-   self.shadowImage = navigationBar.shadowImage;
-   self.translucent = navigationBar.translucent;
-   self.barTintColor = navigationBar.barTintColor;
-   self.backgroundColor = navigationBar.backgroundColor;
+    if (navigationBar)
+    {
+        [self setBackgroundImage: [navigationBar backgroundImageForBarMetrics: UIBarMetricsDefault]
+                   forBarMetrics: UIBarMetricsDefault];
+        
+        self.shadowImage = navigationBar.shadowImage;
+        self.translucent = navigationBar.translucent;
+        self.barTintColor = navigationBar.barTintColor;
+        self.backgroundColor = navigationBar.backgroundColor;
+        self.titleTextAttributes = navigationBar.titleTextAttributes;
+        self.tintColor = navigationBar.tintColor;
+    }
 }
 
 @end
