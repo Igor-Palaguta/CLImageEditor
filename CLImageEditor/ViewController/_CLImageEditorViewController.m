@@ -37,6 +37,7 @@
 @property (nonatomic, strong) CLImageToolBase *currentTool;
 @property (nonatomic, strong, readwrite) CLImageToolInfo *toolInfo;
 @property (nonatomic, strong) UIImageView *targetImageView;
+@property (nonatomic, assign) CGSize recentViewSize;
 @end
 
 
@@ -520,7 +521,7 @@
     return NO;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }
@@ -738,7 +739,10 @@
 {
     [super viewDidLayoutSubviews];
 
-    [self refreshImageView];
+    if(!CGSizeEqualToSize(self.recentViewSize, self.view.frame.size)){
+        [self refreshImageView];
+        self.recentViewSize = self.view.frame.size;
+    }
 }
 
 @end
