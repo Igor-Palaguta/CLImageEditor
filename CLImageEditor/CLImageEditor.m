@@ -36,9 +36,14 @@
     return [[_CLImageEditorViewController alloc] initWithDelegate:delegate];
 }
 
-- (void)showInViewController:(UIViewController*)controller withImageView:(UIImageView*)imageView;
+- (id<UIViewControllerAnimatedTransitioning>)presentTransitionFromView:(UIView*)view
 {
-    
+   return nil;
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)dismissTransitionToView:(UIView*)view
+{
+   return nil;
 }
 
 - (void)selectMenuItemWithToolName:(NSString*)toolName

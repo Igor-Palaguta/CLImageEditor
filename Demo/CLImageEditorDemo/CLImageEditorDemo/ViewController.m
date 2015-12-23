@@ -11,7 +11,7 @@
 #import "CLImageEditor.h"
 
 @interface ViewController ()
-<CLImageEditorDelegate, CLImageEditorTransitionDelegate, CLImageEditorThemeDelegate>
+<CLImageEditorDelegate, CLImageEditorThemeDelegate>
 @end
 
 @implementation ViewController
