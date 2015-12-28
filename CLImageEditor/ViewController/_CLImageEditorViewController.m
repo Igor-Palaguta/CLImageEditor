@@ -64,6 +64,7 @@
 
 @implementation _CLImageEditorViewController
 
+@synthesize imageView = _imageView;
 @synthesize toolInfo = _toolInfo;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -616,7 +617,6 @@
     toView.transform = CGAffineTransformIdentity;
     toView.frame = [toView.superview convertRect:self.frame fromView:self.superview];
     toView.transform = transform;
-    toView.contentMode = self.contentMode;
     toView.clipsToBounds = self.clipsToBounds;
 
     self.transform = transform;
@@ -659,10 +659,9 @@
     editorController.view.userInteractionEnabled = NO;
     editorController.imageView.hidden = YES;
 
-    [UIView animateWithDuration:0.3
+    [UIView animateWithDuration:[self transitionDuration: transitionContext]
                      animations:^{
                          [self.targetView copyInfoToView:animateView];
-                         animateView.contentMode = UIViewContentModeScaleAspectFill;
 
                          editorController.view.backgroundColor = [UIColor clearColor];
                          editorController.menuView.alpha = 0;
@@ -712,9 +711,11 @@
     [transitionContext.containerView insertSubview: editorController.view
                                       aboveSubview: fromController.view];
 
+    [editorController refreshImageView];
     UIImageView *animateView = [UIImageView new];
     [transitionContext.containerView addSubview:animateView];
     [self.targetView copyInfoToView:animateView];
+    animateView.clipsToBounds = YES;
     animateView.contentMode = UIViewContentModeScaleAspectFill;
     animateView.image = self.image;
 
@@ -726,18 +727,7 @@
 
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
                      animations:^{
-                         animateView.transform = CGAffineTransformIdentity;
-
-                         CGFloat dy = ([UIDevice iosVersion]<7) ? [UIApplication sharedApplication].statusBarFrame.size.height : 0;
-
-                         CGSize size = (editorController.imageView.image) ? editorController.imageView.image.size : editorController.imageView.frame.size;
-                         if(size.width>0 && size.height>0){
-                             CGFloat ratio = MIN(editorController.scrollView.width / size.width, editorController.scrollView.height / size.height);
-                             CGFloat W = ratio * size.width;
-                             CGFloat H = ratio * size.height;
-                             animateView.frame = CGRectMake((editorController.scrollView.width-W)/2 + editorController.scrollView.left, (editorController.scrollView.height-H)/2 + editorController.scrollView.top + dy, W, H);
-                         }
-
+                         [editorController.imageView copyInfoToView: animateView];
                          editorController.view.backgroundColor = editorController.theme.backgroundColor;
                          editorController.navigationBar.transform = CGAffineTransformIdentity;
                          editorController.menuView.transform = CGAffineTransformIdentity;
@@ -752,5 +742,3 @@
 }
 
 @end
-
-

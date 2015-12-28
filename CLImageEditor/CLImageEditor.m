@@ -16,6 +16,24 @@
 
 @implementation CLImageEditor
 
+- (UIImageView*)imageView
+{
+   NSParameterAssert(false);
+   return nil;
+}
+
+- (CLImageEditorTheme*)theme
+{
+   return [CLImageEditorTheme theme];
+}
+
+
+- (CLImageToolInfo*)toolInfo
+{
+   NSParameterAssert(false);
+   return nil;
+}
+
 - (id)init
 {
     return [_CLImageEditorViewController new];
@@ -49,11 +67,6 @@
 - (void)selectMenuItemWithToolName:(NSString*)toolName
 {
     
-}
-
-- (CLImageEditorTheme*)theme
-{
-    return [CLImageEditorTheme theme];
 }
 
 @end
