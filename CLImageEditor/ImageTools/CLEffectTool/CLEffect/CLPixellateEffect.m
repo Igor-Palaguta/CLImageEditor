@@ -64,7 +64,7 @@
     CGImageRef cgImage = [context createCGImage:outputImage fromRect:[outputImage extent]];
     
     CGRect clippingRect = [self clippingRectForTransparentSpace:cgImage];
-    UIImage *result = [UIImage imageWithCGImage:cgImage scale:image.scale orientation:image.imageOrientation];
+    UIImage *result = [UIImage imageWithCGImage:cgImage];
     
     CGImageRelease(cgImage);
     

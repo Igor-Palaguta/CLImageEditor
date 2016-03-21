@@ -164,9 +164,9 @@ static NSString* const kCLAdjustmentToolContrastIconName = @"contrastIconAssetsN
     CIContext *context = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer : @(NO)}];
     CIImage *outputImage = [filter outputImage];
     CGImageRef cgImage = [context createCGImage:outputImage fromRect:[outputImage extent]];
-    
-    UIImage *result = [UIImage imageWithCGImage:cgImage scale:image.scale orientation:image.imageOrientation];
-    
+
+    UIImage *result = [UIImage imageWithCGImage:cgImage];
+
     CGImageRelease(cgImage);
     
     return result;
