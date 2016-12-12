@@ -706,7 +706,7 @@
     UIViewController* fromController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
 
     editorController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    editorController.view.frame = transitionContext.containerView.bounds;
+    editorController.view.frame = [transitionContext finalFrameForViewController: editorController];
 
     [transitionContext.containerView insertSubview: editorController.view
                                       aboveSubview: fromController.view];
