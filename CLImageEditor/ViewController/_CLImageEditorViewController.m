@@ -646,6 +646,8 @@
 
     UIViewController* toController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 
+    toController.view.frame = [transitionContext finalFrameForViewController: toController];
+
     [transitionContext.containerView insertSubview: toController.view
                                       belowSubview: editorController.view];
 
