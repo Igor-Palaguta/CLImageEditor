@@ -705,21 +705,20 @@ static NSString* const kCLClippingToolRatioTitleFormat = @"titleFormat";
     _titleLabel.text = [_ratio description];
     
     CGPoint center = _iconView.center;
-    CGFloat W, H;
+    CGFloat W = 50.f;
+    CGFloat H = 50.f;
+    CGFloat maxW = MAX(_iconView.image.size.width, _iconView.image.size.height);
     if(_ratio.ratio!=0){
         if(_ratio.isLandscape){
-            W = 50;
-            H = 50*_ratio.ratio;
+            H *= _ratio.ratio;
         }
         else{
-            W = 50/_ratio.ratio;
-            H = 50;
+            W /= _ratio.ratio;
         }
     }
-    else{
-        CGFloat maxW  = MAX(_iconView.image.size.width, _iconView.image.size.height);
-        W = 50 * _iconView.image.size.width / maxW;
-        H = 50 * _iconView.image.size.height / maxW;
+    else if (maxW != 0){
+        W *= _iconView.image.size.width / maxW;
+        H *= _iconView.image.size.height / maxW;
     }
     _iconView.frame = CGRectMake(center.x-W/2, center.y-H/2, W, H);
 }
